@@ -3,6 +3,11 @@
 
       public $x;
 	  public $y;
+      protected const B = 5;
+	  
+	//  function getConstB(){
+	//	return self::B;
+     // }
 
       function set_x($x) {
         $this->x= $x;
