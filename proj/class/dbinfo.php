@@ -8,38 +8,26 @@ class dbinfo extends db {
         
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
+        $sql = "select * from vartotojas where user = ?";
+        $checkStmt = $db->prepare($sql);
+        $checkStmt->execute(array($username));
+        if($checkStmt->rowCount() > 0) {
+            $checkStmt = null;
+            echo "username taken";
+            header("location: ../index.php?error=usernametaken");
+            exit(); 
+        }
+
+        
         if(!$stmt->execute(array($username, $hashedPassword))) {
             $stmt = null;
             echo "staitment failed";
             header("location: ../index.php?error=stmtfailed");
             exit(); 
         }
-
-        $stmt = null;
-        
+            
+        $stmt = null; 
     }
-
-    protected function check ($username, $password) {
-        $db = $this->connect();
-        $stmt = $db->prepare("SELECT user FROM vartotojas WHERE user = $username");
-        
-        if(!$stmt->execute()) {
-            $stmt = null;
-            echo "staitment failed";
-            header("location: ../index.php?error=stmtfailed");
-            exit(); 
-        } 
-
-        $resultCheck = null;
-        if($stmt->rowCount() == 0) {
-            $resultCheck = false;
-        }
-        else {
-            $resultCheck = true;
-        }
-        return $resultCheck;
-    }
-    // dar galim darasyt error handleri
     }
 	
 ?>

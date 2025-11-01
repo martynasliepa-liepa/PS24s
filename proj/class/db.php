@@ -1,16 +1,20 @@
 <?php
-// connect dar reikia configo db tobulint
-class db {
+class db extends config {
+
     protected function connect() {
+        
+            $this->adress = self::DB_HOST;
+            $this->database = self::DB_NAME;
+            $this->user = self::DB_USER;    
+            $this->pass = self::DB_PASS;
+
         try {
-            $username = "root";
-            $password = "";
-            $db= NEW PDO('mysql:host=localhost;dbname=regdb;charset=utf8mb4', $username, $password);
+            $db= NEW PDO("mysql:host=$this->adress;dbname=$this->database;charset=utf8", $this->user, $this->pass);
             return $db;
         }
         catch (PDOException $e) {
-            echo "Connection failed: " . $e->getMessage();
-            die();
+            echo "nepavyko prisijungti : " . $e->getMessage();
+            exit();
         }
 }
 }
