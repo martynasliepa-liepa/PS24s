@@ -2,9 +2,9 @@
 
 class dbinfo extends db {
 
-    protected function setUser ($username, $password) {
+    protected function setUser ($username, $password, $encryptedPassword) {
         $db = $this->connect();
-        $stmt = $db->prepare("INSERT INTO vartotojas (user, pasw) VALUES (?, ?)");
+        $stmt = $db->prepare("INSERT INTO vartotojas (user, pasw, raktas) VALUES (?, ?, ?)");
         
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
@@ -19,7 +19,7 @@ class dbinfo extends db {
         }
 
         
-        if(!$stmt->execute(array($username, $hashedPassword))) {
+        if(!$stmt->execute(array($username, $hashedPassword, $encryptedPassword))) {
             $stmt = null;
             echo "staitment failed";
             header("location: ../index.php?error=stmtfailed");

@@ -18,11 +18,16 @@ class control extends dbinfo {
             header("location: ../index.php?error=emptypassword");
             exit();
     }
+    $keygen = new keygen();
+    $randomKey = $keygen->generateRandomKey(16);
+    $raktas = new raktas();
+    $plaintext = $this->password;  
+    $key = $randomKey;
+    $encryptedPassword = $raktas->aes128_encrypt($plaintext, $key);
 
-    $this->setUser($this->username, $this->password);
+
+    $this->setUser($this->username, $this->password, $encryptedPassword);
         header("location: ../index.php?error=none");
+        exit();
     }
-
-
-    // gal dar rasyti tikrinimus??
 }
